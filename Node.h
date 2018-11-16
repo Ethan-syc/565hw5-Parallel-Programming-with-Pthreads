@@ -13,6 +13,7 @@ public:
   double current{};
   double absorbed{};
   bool willTrickle{};
+  double trickleAmount{};
   double topTrickle{};
   double bottomTrickle{};
   double leftTrickle{};
