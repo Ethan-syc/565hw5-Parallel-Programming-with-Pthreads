@@ -13,12 +13,10 @@ void simDuringRainDrop(Grid<Node> &grid);
 
 int simAfterRainDrop(Grid<Node> &grid);
 
-bool checkIfAllDry(const Grid<Node> &grid);
-
 void simRecv(Grid<Node> &grid);
 
-void simAbsorb(Grid<Node> &grid);
+bool simAbsorb(Grid<Node> &grid);
 
-void simTrickle(Grid<Node> &grid);
+bool simTrickle(Grid<Node> &grid);
 
 #endif //RAINFALL_SIMULATION_H

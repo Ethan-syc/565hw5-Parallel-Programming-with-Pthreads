@@ -22,15 +22,16 @@ int main(int argc, char *argv[]) {
   initializeGridElevation(grid, argv[4]);
   initializeGridTrickle(grid);
   auto t1 =
-          chrono::time_point_cast<chrono::nanoseconds>(chrono::system_clock::now())
+          chrono::time_point_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now())
                   .time_since_epoch()
                   .count();
+//  auto t1 = chrono::high_resolution_clock::now();
   simDuringRainDrop(grid);
   int time_to_dry_after_rain_stop =
           simAfterRainDrop(grid);
 
   auto t2 =
-          chrono::time_point_cast<chrono::nanoseconds>(chrono::system_clock::now())
+          chrono::time_point_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now())
                   .time_since_epoch()
                   .count();
   cout << "Rainfall simulation completed in " << time_to_dry_after_rain_stop + M
