@@ -6,7 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-
+#include <algorithm>
 
 void initializeGridElevation(Grid<Node> &grid, string file_path) {
   ifstream inputFIle(file_path);
