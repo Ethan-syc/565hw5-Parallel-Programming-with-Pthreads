@@ -15,7 +15,7 @@ void simDuringRainDrop(Grid<Node> &grid) {
 }
 
 bool simTrickle(Grid<Node> &grid) {
-  bool isAllDry = true;
+//  bool isAllDry = true;
   for (size_t i = 1; i < N + 1; i++) {
     for (size_t j = 1; j < N + 1; j++) {
       if (grid[i][j].current > 0 && grid[i][j].willTrickle) {
@@ -23,7 +23,7 @@ bool simTrickle(Grid<Node> &grid) {
                 (grid[i][j].current >= 1) ? 1 : grid[i][j].current;
         grid[i][j].trickleAmount = total_amount_to_trickle;
         grid[i][j].current -= total_amount_to_trickle;
-        isAllDry = false;
+//        isAllDry = false;
       } else {
         grid[i][j].trickleAmount = 0;
       }
@@ -37,11 +37,12 @@ bool simTrickle(Grid<Node> &grid) {
       grid[i][j + 1].current += grid[i][j].rightTrickle * grid[i][j].trickleAmount;
     }
   }
-  return isAllDry;
+//  return isAllDry;
+  return false;
 }
 
 bool simAbsorb(Grid<Node> &grid) {
-  bool isAllDry = true;
+//  bool isAllDry = true;
   for (size_t i = 1; i < N + 1; i++) {
     for (size_t j = 1; j < N + 1; j++) {
       if (grid[i][j].current > 0) {
@@ -49,13 +50,14 @@ bool simAbsorb(Grid<Node> &grid) {
                 (grid[i][j].current > A) ? A : grid[i][j].current;
         grid[i][j].current -= absorb_amount;
         grid[i][j].absorbed += absorb_amount;
-        if (grid[i][j].current != 0) {
-          isAllDry = false;
-        }
+//        if (grid[i][j].current != 0) {
+//          isAllDry = false;
+//        }
       }
     }
   }
-  return isAllDry;
+//  return isAllDry;
+  return false;
 }
 
 void simRecv(Grid<Node> &grid) {
@@ -66,17 +68,29 @@ void simRecv(Grid<Node> &grid) {
   }
 }
 
+bool checkIfAllDry(const Grid<Node> &grid) {
+  for (size_t i = 1; i < N + 1; i++) {
+    for (size_t j = 1; j < N + 1; j++) {
+      if (grid[i][j].current > 0) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+
 int simAfterRainDrop(Grid<Node> &grid) {
   int time_to_dry_after_rain_stop = 0;
-  bool isAllDry = false;
-  while (!isAllDry) {
+//  bool isAllDry = false;
+  while (!checkIfAllDry(grid)) {
     bool absorbDry = simAbsorb(grid);
     bool trickleDry = simTrickle(grid);
     time_to_dry_after_rain_stop++;
-    isAllDry = absorbDry & trickleDry;
+//    isAllDry = absorbDry & trickleDry;
   }
   return time_to_dry_after_rain_stop;
 }
+
 
 
 
