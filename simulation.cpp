@@ -12,12 +12,6 @@ void simDuringRainDrop(Grid<Node> &grid) {
     simAbsorb(grid);
     simTrickle(grid);
   }
-  for (size_t i = 1; i < N + 1; i++) {
-    for (size_t j = 1; j < N + 1; j++) {
-      cout << grid[i][j].current << " ";
-    }
-    cout << endl;
-  }
 }
 
 void simTrickle(Grid<Node> &grid) {
@@ -28,6 +22,8 @@ void simTrickle(Grid<Node> &grid) {
                 (grid[i][j].current >= 1) ? 1 : grid[i][j].current;
         grid[i][j].trickleAmount = total_amount_to_trickle;
         grid[i][j].current -= total_amount_to_trickle;
+      } else {
+        grid[i][j].trickleAmount = 0;
       }
     }
   }

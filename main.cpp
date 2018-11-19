@@ -40,11 +40,11 @@ int main(int argc, char *argv[]) {
   cout << "The following grid shows the number of raindrops absorbed at each "
           "point : "
        << endl;
-//    for (size_t i = 1; i < N + 1; i++) {
-//      for (size_t j = 1; j < N + 1; j++) {
-//        cout << grid[i][j].absorbed << " ";
-//      }
-//      cout << endl;
-//    }
+    for (size_t i = 1; i < N + 1; i++) {
+      for (size_t j = 1; j < N + 1; j++) {
+        cout << grid[i][j].absorbed << " ";
+      }
+      cout << endl;
+    }
 }
 
