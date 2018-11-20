@@ -4,9 +4,9 @@
 #include "utility.h"
 #include <chrono>
 
-int simulate(Grid<Node> &grid, const int& N, const int& M, const double& A) ;
+int simulate(Grid<Node> &grid, const int& N, const int& M, const float& A) ;
 
-bool rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int& N, const int &M, const double& A) ;
+bool rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int& N, const int &M, const float& A) ;
 
 void trickle(Grid<Node> &grid, const int &N) ;
 
@@ -18,7 +18,7 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
   int M = atoi(argv[1]); // time stamp
-  double A = atof(argv[2]); // absorb rate
+  float A = atof(argv[2]); // absorb rate
   int N = atoi(argv[3]); // grid size
   Grid<Node> grid(N + 2);
   initializeGridElevation(grid, argv[4], N);
@@ -48,7 +48,7 @@ int main(int argc, char *argv[]) {
     cout << endl;
   }
 }
-int simulate(Grid<Node> &grid, const int& N, const int& M, const double& A) {
+int simulate(Grid<Node> &grid, const int& N, const int& M, const float& A) {
   int time_steps = 0;
   bool not_dry = false;
   while (time_steps <= M || not_dry) {
@@ -59,7 +59,7 @@ int simulate(Grid<Node> &grid, const int& N, const int& M, const double& A) {
   return time_steps;
 }
 
-bool rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int& N, const int &M, const double& A) {
+bool rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int& N, const int &M, const float& A) {
   bool not_dry = false;
   for (size_t i = 1; i < N + 1; i++) {
     for (size_t j = 1; j < N + 1; j++) {
@@ -67,13 +67,13 @@ bool rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int& N, const 
         grid[i][j].current++;
       }
       if (grid[i][j].current > 0) {
-        double absorb_amount =
+        float absorb_amount =
                 (grid[i][j].current > A) ? A : grid[i][j].current;
         grid[i][j].current -= absorb_amount;
         grid[i][j].absorbed += absorb_amount;
       }
       if (grid[i][j].current > 0 && grid[i][j].willTrickle) {
-        double total_amount_to_trickle =
+        float total_amount_to_trickle =
                 (grid[i][j].current >= 1) ? 1 : grid[i][j].current;
         grid[i][j].trickleAmount = total_amount_to_trickle;
         grid[i][j].current -= total_amount_to_trickle;
@@ -93,7 +93,7 @@ void trickle(Grid<Node> &grid, const int &N) {
   for (size_t i = 1; i < N + 1; i++) {
     for (size_t j = 1; j < N + 1; j++) {
       if (grid[i][j].willTrickle) {
-        double each_trickleAmount = (grid[i][j].trickleAmount / grid[i][j].trickleNumber);
+        float each_trickleAmount = (grid[i][j].trickleAmount / grid[i][j].trickleNumber);
         if (grid[i][j].topTrickle) {
           grid[i - 1][j].current += each_trickleAmount;
         }
