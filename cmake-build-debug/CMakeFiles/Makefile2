@@ -71,7 +71,7 @@ CMAKE_BINARY_DIR = /Users/ethan/CLionProjects/rainfall/cmake-build-debug
 CMakeFiles/rainfall.dir/all:
 	$(MAKE) -f CMakeFiles/rainfall.dir/build.make CMakeFiles/rainfall.dir/depend
 	$(MAKE) -f CMakeFiles/rainfall.dir/build.make CMakeFiles/rainfall.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/ethan/CLionProjects/rainfall/cmake-build-debug/CMakeFiles --progress-num=1,2,3,4 "Built target rainfall"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/ethan/CLionProjects/rainfall/cmake-build-debug/CMakeFiles --progress-num=1,2,3 "Built target rainfall"
 .PHONY : CMakeFiles/rainfall.dir/all
 
 # Include target in all.
@@ -81,7 +81,7 @@ all: CMakeFiles/rainfall.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/rainfall.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ethan/CLionProjects/rainfall/cmake-build-debug/CMakeFiles 4
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ethan/CLionProjects/rainfall/cmake-build-debug/CMakeFiles 3
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/rainfall.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /Users/ethan/CLionProjects/rainfall/cmake-build-debug/CMakeFiles 0
 .PHONY : CMakeFiles/rainfall.dir/rule

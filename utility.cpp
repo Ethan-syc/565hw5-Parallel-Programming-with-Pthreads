@@ -8,7 +8,7 @@
 #include <vector>
 #include <algorithm>
 
-void initializeGridElevation(Grid<Node> &grid, string file_path) {
+void initializeGridElevation(Grid<Node> &grid, const string& file_path, const int& N) {
   ifstream inputFIle(file_path);
   if (inputFIle.fail()) {
     cout << "fail doesn't exist" << endl;
@@ -24,7 +24,7 @@ void initializeGridElevation(Grid<Node> &grid, string file_path) {
   }
 }
 
-void initializeGridTrickle(Grid<Node> &grid) {
+void initializeGridTrickle(Grid<Node> &grid, const int& N) {
   for (int i = 1; i < N + 1; ++i) {
     for (int j = 1; j < N + 1; ++j) {
       initializeNodeTrickle(grid, i, j);
@@ -32,7 +32,7 @@ void initializeGridTrickle(Grid<Node> &grid) {
   }
 }
 
-void initializeNodeTrickle(Grid<Node> &grid, int i, int j) {
+void initializeNodeTrickle(Grid<Node> &grid, const int& i, const int& j) {
   vector<int> neighbors_elevation(0);
   neighbors_elevation.push_back(grid[i - 1][j].elevation);
   neighbors_elevation.push_back(grid[i + 1][j].elevation);
@@ -51,17 +51,17 @@ void initializeNodeTrickle(Grid<Node> &grid, int i, int j) {
       num_of_lowest_elevation++;
     }
   }
-  double each_trickle_amount = 1.0 / num_of_lowest_elevation;
+  grid[i][j].trickleNumber = num_of_lowest_elevation;
   if (lowest_elevation == grid[i - 1][j].elevation) {
-    grid[i][j].topTrickle = each_trickle_amount;
+    grid[i][j].topTrickle = true;
   }
   if (lowest_elevation == grid[i + 1][j].elevation) {
-    grid[i][j].bottomTrickle = each_trickle_amount;
+    grid[i][j].bottomTrickle = true;
   }
   if (lowest_elevation == grid[i][j - 1].elevation) {
-    grid[i][j].leftTrickle = each_trickle_amount;
+    grid[i][j].leftTrickle = true;
   }
   if (lowest_elevation == grid[i][j + 1].elevation) {
-    grid[i][j].rightTrickle = each_trickle_amount;
+    grid[i][j].rightTrickle = true;
   }
 }

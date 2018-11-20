@@ -9,7 +9,7 @@ private:
   T *grid;
   int size;
 public:
-  Grid(int n) {
+  explicit Grid(int n) {
     size = n;
     grid = new T[n * n];
   }

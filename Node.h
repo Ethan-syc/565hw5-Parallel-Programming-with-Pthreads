@@ -10,14 +10,15 @@
 class Node {
 public:
   int elevation;
-  double current{};
-  double absorbed{};
+  float current{};
+  float absorbed{};
   bool willTrickle{};
-  double trickleAmount{};
-  double topTrickle{};
-  double bottomTrickle{};
-  double leftTrickle{};
-  double rightTrickle{};
+  float trickleAmount{};
+  int trickleNumber{};
+  bool topTrickle{};
+  bool bottomTrickle{};
+  bool leftTrickle{};
+  bool rightTrickle{};
 
   Node() : elevation(INT_MAX) {}
 };

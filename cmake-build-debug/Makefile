@@ -150,33 +150,6 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/rainfall.dir/build.make CMakeFiles/rainfall.dir/main.cpp.s
 .PHONY : main.cpp.s
 
-simulation.o: simulation.cpp.o
-
-.PHONY : simulation.o
-
-# target to build an object file
-simulation.cpp.o:
-	$(MAKE) -f CMakeFiles/rainfall.dir/build.make CMakeFiles/rainfall.dir/simulation.cpp.o
-.PHONY : simulation.cpp.o
-
-simulation.i: simulation.cpp.i
-
-.PHONY : simulation.i
-
-# target to preprocess a source file
-simulation.cpp.i:
-	$(MAKE) -f CMakeFiles/rainfall.dir/build.make CMakeFiles/rainfall.dir/simulation.cpp.i
-.PHONY : simulation.cpp.i
-
-simulation.s: simulation.cpp.s
-
-.PHONY : simulation.s
-
-# target to generate assembly for a file
-simulation.cpp.s:
-	$(MAKE) -f CMakeFiles/rainfall.dir/build.make CMakeFiles/rainfall.dir/simulation.cpp.s
-.PHONY : simulation.cpp.s
-
 utility.o: utility.cpp.o
 
 .PHONY : utility.o
@@ -216,9 +189,6 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
-	@echo "... simulation.o"
-	@echo "... simulation.i"
-	@echo "... simulation.s"
 	@echo "... utility.o"
 	@echo "... utility.i"
 	@echo "... utility.s"

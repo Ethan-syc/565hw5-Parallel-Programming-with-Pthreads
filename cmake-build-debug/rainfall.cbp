@@ -87,12 +87,6 @@
 		<Unit filename="/Users/ethan/CLionProjects/rainfall/main.cpp">
 			<Option target="rainfall"/>
 		</Unit>
-		<Unit filename="/Users/ethan/CLionProjects/rainfall/simulation.cpp">
-			<Option target="rainfall"/>
-		</Unit>
-		<Unit filename="/Users/ethan/CLionProjects/rainfall/simulation.h">
-			<Option target="rainfall"/>
-		</Unit>
 		<Unit filename="/Users/ethan/CLionProjects/rainfall/utility.cpp">
 			<Option target="rainfall"/>
 		</Unit>

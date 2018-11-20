@@ -1,7 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/rainfall.dir/main.cpp.o"
   "CMakeFiles/rainfall.dir/utility.cpp.o"
-  "CMakeFiles/rainfall.dir/simulation.cpp.o"
   "rainfall.pdb"
   "rainfall"
 )

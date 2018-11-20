@@ -11,29 +11,20 @@
 
 using namespace std;
 
-// rain time
-extern int M;
-
-// absorb rate
-extern double A;
-
-// grid size
-extern int N;
-
 /**
  * read the elevation from the file
  * and fill corresponding Node's elevation field in the grid
  * @param grid
  */
-void initializeGridElevation(Grid<Node> &grid, string file_path);
+void initializeGridElevation(Grid<Node> &grid, const string& file_path, const int &N);
 
 /**
  * pre-compute every Node's
  * topTrickle, bottomTrickle, leftTrickle, rightTrickle field in the grid
  * @param grid
  */
-void initializeGridTrickle(Grid<Node> &grid);
+void initializeGridTrickle(Grid<Node> &grid, const int& N);
 
-void initializeNodeTrickle(Grid<Node> &grid, int i, int j);
+void initializeNodeTrickle(Grid<Node> &grid, const int& i, const int& j);
 
 #endif //RAINFALL_UTILITY_H

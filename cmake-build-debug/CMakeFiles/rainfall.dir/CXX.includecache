@@ -21,22 +21,8 @@ Grid.h
 /Users/ethan/CLionProjects/rainfall/Grid.h
 utility.h
 /Users/ethan/CLionProjects/rainfall/utility.h
-simulation.h
-/Users/ethan/CLionProjects/rainfall/simulation.h
 chrono
 -
-
-/Users/ethan/CLionProjects/rainfall/simulation.cpp
-simulation.h
-/Users/ethan/CLionProjects/rainfall/simulation.h
-utility.h
-/Users/ethan/CLionProjects/rainfall/utility.h
-
-/Users/ethan/CLionProjects/rainfall/simulation.h
-Grid.h
-/Users/ethan/CLionProjects/rainfall/Grid.h
-Node.h
-/Users/ethan/CLionProjects/rainfall/Node.h
 
 /Users/ethan/CLionProjects/rainfall/utility.cpp
 utility.h
