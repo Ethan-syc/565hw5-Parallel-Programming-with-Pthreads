@@ -10,10 +10,10 @@
 class Node {
 public:
   int elevation;
-  float current{};
-  float absorbed{};
+  double current{};
+  double absorbed{};
   bool willTrickle{};
-  float trickleAmount{};
+  double trickleAmount{};
   int trickleNumber{};
   bool topTrickle{};
   bool bottomTrickle{};
