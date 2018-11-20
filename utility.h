@@ -15,7 +15,7 @@ using namespace std;
 extern int M;
 
 // absorb rate
-extern double A;
+extern float A;
 
 // grid size
 extern int N;

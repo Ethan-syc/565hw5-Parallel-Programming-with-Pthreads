@@ -51,17 +51,17 @@ void initializeNodeTrickle(Grid<Node> &grid, int i, int j) {
       num_of_lowest_elevation++;
     }
   }
-  double each_trickle_amount = 1.0 / num_of_lowest_elevation;
+  grid[i][j].trickleNumber = num_of_lowest_elevation;
   if (lowest_elevation == grid[i - 1][j].elevation) {
-    grid[i][j].topTrickle = each_trickle_amount;
+    grid[i][j].topTrickle = true;
   }
   if (lowest_elevation == grid[i + 1][j].elevation) {
-    grid[i][j].bottomTrickle = each_trickle_amount;
+    grid[i][j].bottomTrickle = true;
   }
   if (lowest_elevation == grid[i][j - 1].elevation) {
-    grid[i][j].leftTrickle = each_trickle_amount;
+    grid[i][j].leftTrickle = true;
   }
   if (lowest_elevation == grid[i][j + 1].elevation) {
-    grid[i][j].rightTrickle = each_trickle_amount;
+    grid[i][j].rightTrickle = true;
   }
 }
