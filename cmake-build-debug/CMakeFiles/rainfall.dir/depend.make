@@ -4,14 +4,7 @@
 CMakeFiles/rainfall.dir/main.cpp.o: ../Grid.h
 CMakeFiles/rainfall.dir/main.cpp.o: ../Node.h
 CMakeFiles/rainfall.dir/main.cpp.o: ../main.cpp
-CMakeFiles/rainfall.dir/main.cpp.o: ../simulation.h
 CMakeFiles/rainfall.dir/main.cpp.o: ../utility.h
-
-CMakeFiles/rainfall.dir/simulation.cpp.o: ../Grid.h
-CMakeFiles/rainfall.dir/simulation.cpp.o: ../Node.h
-CMakeFiles/rainfall.dir/simulation.cpp.o: ../simulation.cpp
-CMakeFiles/rainfall.dir/simulation.cpp.o: ../simulation.h
-CMakeFiles/rainfall.dir/simulation.cpp.o: ../utility.h
 
 CMakeFiles/rainfall.dir/utility.cpp.o: ../Grid.h
 CMakeFiles/rainfall.dir/utility.cpp.o: ../Node.h
