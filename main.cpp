@@ -1,4 +1,3 @@
-
 #include "Node.h"
 #include "Grid.h"
 #include "utility.h"
