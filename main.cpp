@@ -107,7 +107,9 @@ void simulate(Grid<Node> &grid, const int &N, const int &M, const float &A,
     }
 
     pthread_barrier_wait(&barrier2);
+    pthread_mutex_lock(&mutex_grid[0][0]);
     global_not_dry = thread_i_not_dry | global_not_dry;
+    pthread_mutex_unlock(&mutex_grid[0][0]);
     pthread_barrier_wait(&barrier3);
   }
 }
