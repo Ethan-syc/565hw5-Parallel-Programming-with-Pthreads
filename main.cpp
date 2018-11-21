@@ -2,12 +2,13 @@
 #include "Grid.h"
 #include "utility.h"
 #include <chrono>
+#include <algorithm>
 
-int simulate(Grid<Node> &grid, const int& N, const int& M, const float& A) ;
+int simulate(Grid<Node> &grid, const int &N, const int &M, const float &A);
 
-bool rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int& N, const int &M, const float& A) ;
+bool rainAndAbsorb(Grid<Node> &grid, int &time_steps, const int &N, const int &M, const float &A);
 
-void trickle(Grid<Node> &grid, const int &N) ;
+void trickle(Grid<Node> &grid, const int &N);
 
 using namespace std;
 
@@ -47,19 +48,20 @@ int main(int argc, char *argv[]) {
     cout << endl;
   }
 }
-int simulate(Grid<Node> &grid, const int& N, const int& M, const float& A) {
+
+int simulate(Grid<Node> &grid, const int &N, const int &M, const float &A) {
   int time_steps = 0;
   bool not_dry = false;
   while (time_steps <= M || not_dry) {
     not_dry = rainAndAbsorb(grid, time_steps, N, M, A);
     trickle(grid, N);
-    time_steps++;
   }
   return time_steps;
 }
 
-bool rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int& N, const int &M, const float& A) {
+bool rainAndAbsorb(Grid<Node> &grid, int &time_steps, const int &N, const int &M, const float &A) {
   bool not_dry = false;
+  int stop_trickle_number = 0;
   for (size_t i = 1; i < N + 1; i++) {
     for (size_t j = 1; j < N + 1; j++) {
       if (time_steps < M) {
@@ -79,16 +81,30 @@ bool rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int& N, const 
         not_dry = true;
       } else {
         grid[i][j].trickleAmount = 0;
+        stop_trickle_number++;
       }
       if (grid[i][j].current != 0) {
         not_dry = true;
       }
     }
   }
+  time_steps++;
+  if (stop_trickle_number == N * N) {
+    int max_time_to_end_absorb = 0;
+    for (size_t i = 1; i < N + 1; i++) {
+      for (size_t j = 1; j < N + 1; j++) {
+        max_time_to_end_absorb = max(max_time_to_end_absorb, (int) (grid[i][j].current / A));
+        grid[i][j].absorbed += grid[i][j].current;
+      }
+    }
+    time_steps += max_time_to_end_absorb;
+    return false;
+  }
   return not_dry;
 }
 
 void trickle(Grid<Node> &grid, const int &N) {
+
   for (size_t i = 1; i < N + 1; i++) {
     for (size_t j = 1; j < N + 1; j++) {
       if (grid[i][j].willTrickle) {
