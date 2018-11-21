@@ -93,6 +93,16 @@ int main(int argc, char *argv[]) {
   exit(0);
 }
 
+bool checkAllDry(Grid<Node> &grid, int N) {
+  for (size_t i = 1; i < N+1; i++) {
+    for (size_t j = 1; j < N+1; j++) {
+      if (grid[i][j].current != 0) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
 void simulate(Grid<Node> &grid, const int &N, const int &M, const float &A,
               const int &P, const int &thread_id, Grid<pthread_mutex_t> &mutex_grid) {
                 global_not_dry = true;
@@ -102,22 +112,17 @@ void simulate(Grid<Node> &grid, const int &N, const int &M, const float &A,
     pthread_barrier_wait(&barrier1);
     trickle(grid, N, thread_id, P, mutex_grid);
     if (thread_id == 0) {
-      global_not_dry = false;
       global_time_steps++;
+      global_not_dry = !checkAllDry(grid, N);
     }
-
     pthread_barrier_wait(&barrier2);
-    pthread_mutex_lock(&mutex_grid[0][0]);
-    global_not_dry = thread_i_not_dry | global_not_dry;
-    pthread_mutex_unlock(&mutex_grid[0][0]);
-    pthread_barrier_wait(&barrier3);
   }
 }
 
 bool rainAndAbsorb(Grid<Node> &grid, atomic<int> &time_steps, const int &N,
                    const int &M, const float &A, const int &thread_id,
                    const int P) {
-  bool not_dry = false;
+  // bool not_dry = false;
   int stop_trickle_number = 0;
   for (int i = thread_id * (N / P) + 1; i < (thread_id + 1) * (N / P) + 1;
        i++) {
@@ -135,13 +140,13 @@ bool rainAndAbsorb(Grid<Node> &grid, atomic<int> &time_steps, const int &N,
             (grid[i][j].current >= 1) ? 1 : grid[i][j].current;
         grid[i][j].trickleAmount = total_amount_to_trickle;
         grid[i][j].current -= total_amount_to_trickle;
-        not_dry = true;
+        // not_dry = true;
       } else {
         grid[i][j].trickleAmount = 0;
         stop_trickle_number++;
       }
       if (grid[i][j].current != 0) {
-        not_dry = true;
+        // not_dry = true;
       }
     }
   }
@@ -155,9 +160,9 @@ bool rainAndAbsorb(Grid<Node> &grid, atomic<int> &time_steps, const int &N,
   //      }
   //    }
   //    time_steps += max_time_to_end_absorb;
-  //    return false;
+     return false;
   //  }
-  return not_dry;
+  // return not_dry;
 }
 
 void trickle(Grid<Node> &grid, const int &N, const int &thread_id,
