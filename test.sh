@@ -1,3 +1,5 @@
 #!/bin/bash
-./rainfall 35 0.5 2048 sample_2048x2048.in > result.out
-head -n3 result.out
+for i in {1..10000}; do
+  ./rainfall 8 50 0.5 4096 measurement_4096x4096.in
+  ./check.py 4096 sample_512x512.out result.out
+done
