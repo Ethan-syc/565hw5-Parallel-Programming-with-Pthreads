@@ -1,0 +1,9 @@
+user308@ece-az-03:~/hw5$ head -n3 result.out
+Rainfall simulation completed in 1040 time steps
+Runtime = 19.8211 seconds
+
+user308@ece-az-03:~/hw5$ ./rainfall 1 50 0.5 4096 measurement_4096x4096.in > result.out
+user308@ece-az-03:~/hw5$ head -n3 result.out
+Rainfall simulation completed in 1040 time steps
+Runtime = 122.754 seconds
+
