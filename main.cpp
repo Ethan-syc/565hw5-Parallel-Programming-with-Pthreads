@@ -56,20 +56,21 @@ int main(int argc, char *argv[]) {
   initializeGridElevation(grid, argv[5], N);
   initializeGridTrickle(grid, N);
   pthread_t *threads = (pthread_t *)malloc(P * sizeof(pthread_t));
-  struct threadArgs *thread_args = (struct threadArgs*)malloc(P * sizeof(struct threadArgs));
+  struct threadArgs *thread_args;
   auto t1 = chrono::time_point_cast<chrono::nanoseconds>(
                 chrono::high_resolution_clock::now())
                 .time_since_epoch()
                 .count();
   for (int i = 0; i < P; ++i) {
-    thread_args[i].P = P;
-    thread_args[i].M = M;
-    thread_args[i].A = A;
-    thread_args[i].N = N;
-    thread_args[i].grid = &grid;
-    thread_args[i].mutex_array = mutex_array;
-    thread_args[i].threadId = i;
-    pthread_create(threads + i, nullptr, worker, (void *)(thread_args + i));
+    thread_args = (struct threadArgs *)malloc(sizeof(struct threadArgs));
+    thread_args->P = P;
+    thread_args->M = M;
+    thread_args->A = A;
+    thread_args->N = N;
+    thread_args->grid = &grid;
+    thread_args->mutex_array = mutex_array;
+    thread_args->threadId = i;
+    pthread_create(threads + i, nullptr, worker, (void *)(thread_args));
   }
   for (int i = 0; i < P; ++i) {
     pthread_join(threads[i], nullptr);
@@ -91,12 +92,12 @@ int main(int argc, char *argv[]) {
     cout << endl;
   }
   pthread_barrier_destroy(&barrier);
-  for (size_t i = 0; i < N+2; i++) {
-    pthread_mutex_destroy(mutex_array+i);
+  for (size_t i = 0; i < N + 2; i++) {
+    pthread_mutex_destroy(mutex_array + i);
   }
   delete[] mutex_array;
   free(threads);
-  free(thread_args);
+  // free(thread_args);
   exit(0);
 }
 
@@ -221,4 +222,5 @@ void *worker(void *arg) {
   int P = thread_args.P;
   int thread_id = thread_args.threadId;
   simulate(*thread_args.grid, thread_args.mutex_array, N, M, A, P, thread_id);
+  free(arg);
 }
