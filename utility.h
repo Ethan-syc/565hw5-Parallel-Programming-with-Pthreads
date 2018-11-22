@@ -19,12 +19,18 @@ using namespace std;
 void initializeGridElevation(Grid<Node> &grid, const string& file_path, const int &N);
 
 /**
- * pre-compute every Node's
- * topTrickle, bottomTrickle, leftTrickle, rightTrickle field in the grid
+ * pre-compute every Node's in the Grid
+ * topTrickle, bottomTrickle, leftTrickle, rightTrickle, trickleNumber, willTrickle field in the grid
  * @param grid
  */
 void initializeGridTrickle(Grid<Node> &grid, const int& N);
 
+/**
+ * helper function for every Node in initializeGridTrickle
+ * @param grid
+ * @param i
+ * @param j
+ */
 void initializeNodeTrickle(Grid<Node> &grid, const int& i, const int& j);
 
 #endif //RAINFALL_UTILITY_H
