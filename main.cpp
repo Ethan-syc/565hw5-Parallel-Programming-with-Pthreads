@@ -6,13 +6,14 @@
 #include <chrono>
 #include <pthread.h>
 void simulate(Grid<Node> &grid, const int &N, const int &M, const float &A,
-              const int &P, const int &thread_id, Grid<pthread_mutex_t> &mutex_grid);
+              const int &P, const int &thread_id, pthread_mutex_t *mutex_array);
 
 bool rainAndAbsorb(Grid<Node> &grid, atomic<int> &time_steps, const int &N,
                    const int &M, const float &A, const int &thread_id,
                    const int P);
 
-void trickle(Grid<Node> &grid, const int &N, const int &thread_id, const int P, Grid<pthread_mutex_t> &mutex_grid);
+void trickle(Grid<Node> &grid, const int &N, const int &thread_id, const int P,
+             pthread_mutex_t *mutex_array);
 
 void *worker(void *arg);
 
@@ -29,7 +30,7 @@ struct threadArgs {
   float A;
   int N;
   Grid<Node> *grid;
-  Grid<pthread_mutex_t> *mutex_grid;
+  pthread_mutex_t *mutex_array;
   int threadId;
 };
 
@@ -43,7 +44,8 @@ int main(int argc, char *argv[]) {
   float A = atof(argv[3]); // absorb rate
   int N = atoi(argv[4]);   // grid size
   Grid<Node> grid(N + 2);
-  Grid<pthread_mutex_t> mutex_grid(N + 2);
+  // Grid<pthread_mutex_t> mutex_array(N + 2);
+  pthread_mutex_t *mutex_array = new pthread_mutex_t[N + 2];
   global_not_dry = false;
   global_time_steps = 0;
   initializeGridElevation(grid, argv[5], N);
@@ -64,7 +66,7 @@ int main(int argc, char *argv[]) {
     thread_args->A = A;
     thread_args->N = N;
     thread_args->grid = &grid;
-    thread_args->mutex_grid = &mutex_grid;
+    thread_args->mutex_array = mutex_array;
     thread_args->threadId = i;
     pthread_create(threads + i, nullptr, worker, (void *)(thread_args));
   }
@@ -93,27 +95,39 @@ int main(int argc, char *argv[]) {
   exit(0);
 }
 
-bool checkAllDry(Grid<Node> &grid, int N) {
-  for (size_t i = 1; i < N+1; i++) {
-    for (size_t j = 1; j < N+1; j++) {
-      if (grid[i][j].current != 0) {
+bool checkAllDry(Grid<Node> &grid, int N, const float &A) {
+  bool still_need_to_trickle = false;
+  bool all_dry = true;
+  for (size_t i = 1; i < N + 1; i++) {
+    for (size_t j = 1; j < N + 1; j++) {
+      if (grid[i][j].trickleAmount != 0) {
         return false;
       }
     }
   }
+  int max_time_to_end_absorb = 0;
+  for (size_t i = 1; i < N + 1; i++) {
+    for (size_t j = 1; j < N + 1; j++) {
+      max_time_to_end_absorb =
+          max(max_time_to_end_absorb, (int)(grid[i][j].current / A));
+      grid[i][j].absorbed += grid[i][j].current;
+    }
+  }
+  global_time_steps += max_time_to_end_absorb;
   return true;
 }
 void simulate(Grid<Node> &grid, const int &N, const int &M, const float &A,
-              const int &P, const int &thread_id, Grid<pthread_mutex_t> &mutex_grid) {
-                global_not_dry = true;
+              const int &P, const int &thread_id,
+              pthread_mutex_t *mutex_array) {
+  global_not_dry = true;
   while (global_time_steps < M || global_not_dry) {
     bool thread_i_not_dry =
         rainAndAbsorb(grid, global_time_steps, N, M, A, thread_id, P);
     pthread_barrier_wait(&barrier1);
-    trickle(grid, N, thread_id, P, mutex_grid);
+    trickle(grid, N, thread_id, P, mutex_array);
     if (thread_id == 0) {
       global_time_steps++;
-      global_not_dry = !checkAllDry(grid, N);
+      global_not_dry = !checkAllDry(grid, N, A);
     }
     pthread_barrier_wait(&barrier2);
   }
@@ -160,13 +174,13 @@ bool rainAndAbsorb(Grid<Node> &grid, atomic<int> &time_steps, const int &N,
   //      }
   //    }
   //    time_steps += max_time_to_end_absorb;
-     return false;
+  return false;
   //  }
   // return not_dry;
 }
 
-void trickle(Grid<Node> &grid, const int &N, const int &thread_id,
-             const int P, Grid<pthread_mutex_t> &mutex_grid) {
+void trickle(Grid<Node> &grid, const int &N, const int &thread_id, const int P,
+             pthread_mutex_t *mutex_array) {
   for (int i = thread_id * (N / P) + 1; i < (thread_id + 1) * (N / P) + 1;
        i++) {
     for (int j = 1; j < N + 1; j++) {
@@ -174,24 +188,25 @@ void trickle(Grid<Node> &grid, const int &N, const int &thread_id,
         float each_trickleAmount =
             (grid[i][j].trickleAmount / grid[i][j].trickleNumber);
         if (grid[i][j].topTrickle) {
-          pthread_mutex_lock(&mutex_grid[i-1][j]);
+          pthread_mutex_lock(&mutex_array[i - 1]);
           grid[i - 1][j].current += each_trickleAmount;
-          pthread_mutex_unlock(&mutex_grid[i-1][j]);
+          pthread_mutex_unlock(&mutex_array[i - 1]);
         }
         if (grid[i][j].bottomTrickle) {
-          pthread_mutex_lock(&mutex_grid[i+1][j]);
+
+          pthread_mutex_lock(&mutex_array[i + 1]);
           grid[i + 1][j].current += each_trickleAmount;
-          pthread_mutex_unlock(&mutex_grid[i+1][j]);
+          pthread_mutex_unlock(&mutex_array[i + 1]);
         }
         if (grid[i][j].leftTrickle) {
-          pthread_mutex_lock(&mutex_grid[i][j-1]);
+          pthread_mutex_lock(&mutex_array[i]);
           grid[i][j - 1].current += each_trickleAmount;
-          pthread_mutex_unlock(&mutex_grid[i][j-1]);
+          pthread_mutex_unlock(&mutex_array[i]);
         }
         if (grid[i][j].rightTrickle) {
-          pthread_mutex_lock(&mutex_grid[i][j+1]);
+          pthread_mutex_lock(&mutex_array[i]);
           grid[i][j + 1].current += each_trickleAmount;
-          pthread_mutex_unlock(&mutex_grid[i][j+1]);
+          pthread_mutex_unlock(&mutex_array[i]);
         }
       }
     }
@@ -205,5 +220,5 @@ void *worker(void *arg) {
   float A = thread_args.A;
   int P = thread_args.P;
   int id = thread_args.threadId;
-  simulate(*thread_args.grid, N, M, A, P, id, *thread_args.mutex_grid);
+  simulate(*thread_args.grid, N, M, A, P, id, thread_args.mutex_array);
 }
