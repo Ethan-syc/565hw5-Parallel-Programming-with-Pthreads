@@ -1,3 +1,0 @@
-/Users/ethan/CLionProjects/rainfall/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/Users/ethan/CLionProjects/rainfall/cmake-build-debug/CMakeFiles/edit_cache.dir
-/Users/ethan/CLionProjects/rainfall/cmake-build-debug/CMakeFiles/rainfall.dir
