@@ -1,0 +1,20 @@
+user308@ece-az-03:~/hw5$ ./test.sh
+using 1 threads:
+Output matches all expected values.
+Rainfall simulation completed in 1040 time steps
+Runtime = 67.5058 seconds
+
+using 2 threads:
+Output matches all expected values.
+Rainfall simulation completed in 1040 time steps
+Runtime = 35.1559 seconds
+
+using 4 threads:
+Output matches all expected values.
+Rainfall simulation completed in 1040 time steps
+Runtime = 19.1285 seconds
+
+using 8 threads:
+Output matches all expected values.
+Rainfall simulation completed in 1040 time steps
+Runtime = 12.0705 seconds
