@@ -189,15 +189,23 @@ void trickle(Grid<Node> &grid, pthread_mutex_t *&mutex_array, const int &N,
       if (grid[i][j].willTrickle) {
         float each_trickleAmount =
             (grid[i][j].trickleAmount / grid[i][j].trickleNumber);
-        if (grid[i][j].topTrickle && i == thread_id * workload + 1) {
-          pthread_mutex_lock(&mutex_array[i - 1]);
+        if (grid[i][j].topTrickle) {
+          if (i == thread_id * workload + 1) {
+            pthread_mutex_lock(&mutex_array[i - 1]);
+          }
           grid[i - 1][j].current += each_trickleAmount;
-          pthread_mutex_unlock(&mutex_array[i - 1]);
+          if (i == thread_id * workload + 1) {
+            pthread_mutex_unlock(&mutex_array[i - 1]);
+          }
         }
-        if (grid[i][j].bottomTrickle && i == (thread_id + 1) * workload) {
-          pthread_mutex_lock(&mutex_array[i + 1]);
+        if (grid[i][j].bottomTrickle) {
+          if (i == (thread_id + 1) * workload) {
+            pthread_mutex_lock(&mutex_array[i + 1]);
+          }
           grid[i + 1][j].current += each_trickleAmount;
-          pthread_mutex_unlock(&mutex_array[i + 1]);
+          if (i == (thread_id + 1) * workload) {
+            pthread_mutex_unlock(&mutex_array[i + 1]);
+          }
         }
         if (grid[i][j].leftTrickle) {
           grid[i][j - 1].current += each_trickleAmount;
