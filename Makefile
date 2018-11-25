@@ -21,4 +21,4 @@ utility.o: utility.cpp utility.h
 .PHONY:clean
 
 clean:
-	rm -f rainfall *.o
+	rm -f rainfall_seq rainfall_pt *.o
