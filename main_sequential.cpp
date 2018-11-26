@@ -15,15 +15,15 @@ void trickle(Grid<Node> &grid, const int &N);
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  if (argc != 5) {
-    cout << "usage: ./rainfall <M> <A> <N> <elevation_file>" << endl;
+  if (argc != 6) {
+    cout << "usage: ./rainfall <P> <M> <A> <N> <elevation_file>" << endl;
     exit(EXIT_FAILURE);
   }
-  int M = atoi(argv[1]); // time stamp
-  float A = atof(argv[2]); // absorb rate
-  int N = atoi(argv[3]); // grid size
+  int M = atoi(argv[2]);   // time stamp
+  float A = atof(argv[3]); // absorb rate
+  int N = atoi(argv[4]);   // grid size
   Grid<Node> grid(N + 2);
-  initializeGridElevation(grid, argv[4], N);
+  initializeGridElevation(grid, argv[5], N);
   initializeGridTrickle(grid, N);
   auto t1 =
           chrono::time_point_cast<chrono::nanoseconds>(chrono::high_resolution_clock::now())
