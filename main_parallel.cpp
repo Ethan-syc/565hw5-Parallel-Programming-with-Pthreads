@@ -180,6 +180,10 @@ void rainAndAbsorb(Grid<Node> &grid, const int &time_steps, const int &N,
 
 void trickle(Grid<Node> &grid, pthread_mutex_t *&mutex_array, const int &N,
              const int &workload, const int &thread_id) {
+  int first_row = thread_id * workload + 1;
+  int second_row = thread_id * workload + 2;
+  int last_row = (thread_id + 1) * workload;
+  int second_last_row = (thread_id + 1) * workload - 1;
   for (int i = thread_id * workload + 1; i < (thread_id + 1) * workload + 1;
        i++) {
     if (i >= N + 1) {
@@ -190,28 +194,40 @@ void trickle(Grid<Node> &grid, pthread_mutex_t *&mutex_array, const int &N,
         float each_trickleAmount =
             (grid[i][j].trickleAmount / grid[i][j].trickleNumber);
         if (grid[i][j].topTrickle) {
-          if (i == thread_id * workload + 1) {
+          if (i == first_row || i == second_row) {
             pthread_mutex_lock(&mutex_array[i - 1]);
           }
           grid[i - 1][j].current += each_trickleAmount;
-          if (i == thread_id * workload + 1) {
+          if (i == first_row || i == second_row) {
             pthread_mutex_unlock(&mutex_array[i - 1]);
           }
         }
         if (grid[i][j].bottomTrickle) {
-          if (i == (thread_id + 1) * workload) {
+          if (i == last_row || i == second_last_row) {
             pthread_mutex_lock(&mutex_array[i + 1]);
           }
           grid[i + 1][j].current += each_trickleAmount;
-          if (i == (thread_id + 1) * workload) {
+          if (i == last_row || i == second_last_row) {
             pthread_mutex_unlock(&mutex_array[i + 1]);
           }
         }
         if (grid[i][j].leftTrickle) {
+          if (i == first_row || i == last_row) {
+            pthread_mutex_lock(&mutex_array[i]);
+          }
           grid[i][j - 1].current += each_trickleAmount;
+          if (i == first_row || i == last_row) {
+            pthread_mutex_unlock(&mutex_array[i]);
+          }
         }
         if (grid[i][j].rightTrickle) {
+          if (i == first_row || i == last_row) {
+            pthread_mutex_lock(&mutex_array[i]);
+          }
           grid[i][j + 1].current += each_trickleAmount;
+          if (i == first_row || i == last_row) {
+            pthread_mutex_unlock(&mutex_array[i]);
+          }
         }
       }
     }
@@ -228,3 +244,4 @@ void *worker(void *arg) {
   simulate(*thread_args.grid, thread_args.mutex_array, N, M, A, P, thread_id);
   free(arg);
 }
+

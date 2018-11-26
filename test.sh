@@ -1,5 +1,5 @@
 #!/bin/bash
-./rainfall_seq 50 0.5 4096 measurement_4096x4096.in > result_seq.out
+./rainfall_seq 1 50 0.5 4096 measurement_4096x4096.in > result_seq.out
 echo "sequential code:"
 ./check.py 4096 measurement_4096x4096.out result_seq.out
 head -n3 result_seq.out
